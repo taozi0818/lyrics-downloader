@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-const { version } = require('../package.json');
+require('source-map-support').install();
+
+const { version, name } = require('../package.json');
 process.env.VERSION = version;
 process.env.PACKAGE_NAME = name;
 

@@ -49,9 +49,13 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
       const { result: songInfo } = matchResult;
       const songId = songInfo.id;
       const lyrics = await this.searchLyrics(songId);
-      const lyricsFilePath = this.defaultLyricsHandler(song, lyrics);
+      const { path: lyricsFilePath, name: lyricsFileName } = await this.handlerLyrics(song, lyrics);
+
+      console.log(chalk.green(`${t('zh', 'lyrics.download_success')}: ${lyricsFileName}`));
+
       return { success: true, lyrics: lyricsFilePath };
     } catch (e) {
+      console.log(chalk.bold.red(`${t('zh', 'lyrics.download_failed')}: ${song._filename}`));
       return { success: false };
     }
   }
@@ -72,7 +76,10 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
       params: {
         csrf_token: ''
       },
-      data: qs.stringify(encBody),
+      data: qs.stringify({
+        params: encBody.encText,
+        encSecKey: encBody.encSecKey,
+      }),
     });
 
     if (!data.code || data.code !== 200) {
@@ -103,7 +110,7 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
   }
 
   private async searchLyrics(id: number) {
-    const { data } = await axios.request<Lyrics>({
+    const { data } = await this.axios.request<Lyrics>({
       url: ApiRouter.SearchLyrics,
       method: 'GET',
       params: { id },
@@ -122,11 +129,14 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
     }
 
     const mediaFile = path.parse(song._path);
-    const filePath = path.resolve(mediaFile.dir, mediaFile.name, this.extname);
+    const lyricsFileName = mediaFile.name + this.lyricsExtname;
+    const filePath = path.resolve(mediaFile.dir, lyricsFileName);
 
     fs.writeFileSync(filePath, lyrics);
-    console.log(chalk.bold.green(t('zh', 'lyrics.download_success')));
 
-    return filePath;
+    return {
+      path: filePath,
+      name: lyricsFileName,
+    };
   }
 }

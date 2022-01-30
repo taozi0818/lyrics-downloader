@@ -2,9 +2,17 @@
   "name": "lyrics-downloader",
   "version": "1.0.0",
   "description": "Download lyrics automatically",
-  "main": "index.js",
+  "bin": {
+    "lyrics-downloader": "bin/index",
+    "lyrics-dl": "bin/index",
+    "lyrics": "bin/index"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npm run clean && tsc",
+    "clean": "rimraf ./lib",
+    "lint": "eslint --fix --quiet ./src",
+    "dev": "npm run build && npm link"
   },
   "repository": {
     "type": "git",
@@ -12,6 +20,10 @@
   },
   "author": "tangyongtao<taoz110818@gmail.com>",
   "license": "ISC",
+  "keywords": [
+    "lyrics",
+    "netease"
+  ],
   "bugs": {
     "url": "https://github.com/taozi0818/lyrics-downloader/issues"
   },
@@ -22,7 +34,8 @@
     "crypto-js": "^4.1.1",
     "inquirer": "^8.2.0",
     "music-metadata": "^7.11.7",
-    "qs": "^6.10.3"
+    "qs": "^6.10.3",
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
     "@types/node": "12.x",

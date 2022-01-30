@@ -4,18 +4,20 @@ import { enAndZh } from './utils/display';
 
 const program = new Command();
 const version = process.env.VERSION;
-const commandName = '';
+const commandName = 'lyrics-downloader';
 
 enum CommandName {
   Info = 'info',
-  Lyrics = 'lyrics',
+  Download = 'download',
 }
 
 program
   .name(commandName)
-  .alias('')
+  .alias('lyrics-dl')
+  .alias('lyrics')
   .version(version)
   .description(`${enAndZh('main.desc')}`)
-  .addCommand(commands.lyrics.name(CommandName.Lyrics));
+  .addCommand(commands.info.name(CommandName.Info))
+  .addCommand(commands.download.name(CommandName.Download));
 
 export default program;

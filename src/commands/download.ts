@@ -19,7 +19,6 @@ async function action(argument: string, options, command: Command) {
 
 const command = new Command()
   .description(`${enAndZh('lyrics.desc_download')}`)
-  .storeOptionsAsProperties()
   .action(action);
 
 export default command;

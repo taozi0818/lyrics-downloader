@@ -628,4 +628,5 @@ RSAUtils.decryptedString = function (key, s) {
 
 RSAUtils.setMaxDigits(131)
 
+// Copy from ohdave rsa: https://ohdave.com/rsa/
 module.exports = RSAUtils

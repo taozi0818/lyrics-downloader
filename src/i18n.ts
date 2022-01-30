@@ -1,9 +1,10 @@
 const EN = {
   'example.case': 'content of example',
   'main.desc': 'Lyrics downloader',
-  'info.desc': 'display info of this cli',
+  'info.desc': 'display information of this tool',
   'lyrics.desc_download': 'Download lyrics',
   'lyrics.download_success': 'download successfully',
+  'lyrics.download_failed': 'download failed',
 };
 
 type LangCase = {
@@ -18,6 +19,7 @@ const ZH: LangCase = {
   'info.desc': '显示工具信息',
   'lyrics.desc_download': '下载歌词',
   'lyrics.download_success': '下载成功',
+  'lyrics.download_failed': '下载失败',
 };
 
 const languageMap = {
