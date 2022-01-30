@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es2018",
+    "outDir": "./lib",
+    "module": "commonjs",
+    "incremental": true,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "lib": ["es2018", "dom"],
+    "allowJs": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "useUnknownInCatchVariables": false,
+    "typeRoots": ["../typings", "node_modules/@types"]
+  },
+  "include": [
+    "src/**/*",
+    "tests"
+  ],
+  "exclude": ["node_modules", "lib"]
+}
+

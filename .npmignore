@@ -1,0 +1,17 @@
+node_modules/
+coverage/
+.vscode/
+.DS_Store
+test/
+jest/
+jest.config.js
+webpack/
+tslint.json
+tsconfig.json
+tsconfig.browser.json
+.gitlab-ci.yml
+.eslintrc.js
+.prettierrc.js
+.idea
+src/
+scripts/

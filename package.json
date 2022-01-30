@@ -1,0 +1,37 @@
+{
+  "name": "lyrics-downloader",
+  "version": "1.0.0",
+  "description": "Download lyrics automatically",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/taozi0818/lyrics-downloader.git"
+  },
+  "author": "tangyongtao<taoz110818@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/taozi0818/lyrics-downloader/issues"
+  },
+  "homepage": "https://github.com/taozi0818/lyrics-downloader#readme",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "commander": "^9.0.0",
+    "crypto-js": "^4.1.1",
+    "inquirer": "^8.2.0",
+    "music-metadata": "^7.11.7",
+    "qs": "^6.10.3"
+  },
+  "devDependencies": {
+    "@types/node": "12.x",
+    "@types/qrcode-terminal": "^0.12.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^7.32.0",
+    "install": "^0.13.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.5.4"
+  }
+}

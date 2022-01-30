@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+const { version } = require('../package.json');
+process.env.VERSION = version;
+process.env.PACKAGE_NAME = name;
+
+const program = require('../lib/index').default;
+program.parse(process.argv);
