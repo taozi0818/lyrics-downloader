@@ -6,4 +6,4 @@ This tool mainly used for children, so it must be convenient and easy to underst
 
 ## TODO 🚀
 
-- `Downloader` could become a simple package, to help other developers.
+- `Downloader` could become a separate package, to help other developers.
