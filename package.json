@@ -1,5 +1,5 @@
 {
-  "name": "lyrics-downloader",
+  "name": "lyrics-downloader-cli",
   "version": "1.0.0",
   "description": "Download lyrics automatically",
   "bin": {
