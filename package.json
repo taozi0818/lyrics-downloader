@@ -12,7 +12,8 @@
     "build": "npm run clean && tsc",
     "clean": "rimraf ./lib",
     "lint": "eslint --fix --quiet ./src",
-    "dev": "npm run build && npm link"
+    "dev": "npm run build && npm link",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
