@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Download lyrics automatically",
   "bin": {
-    "lyrics-downloader": "dist/main.js",
-    "lyrics-dl": "dist/main.js",
-    "lyrics": "dist/main.js"
+    "lyrics-downloader": "bin/index",
+    "lyrics-dl": "bin/index",
+    "lyrics": "bin/index"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -13,6 +13,7 @@
     "clean": "rimraf ./lib",
     "lint": "eslint --fix --quiet ./src",
     "dev": "npm run build && npm link",
+    "pack": "TS_NODE_PROJECT=tsconfig.json webpack",
     "prepublishOnly": "npm run build"
   },
   "repository": {

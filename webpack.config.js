@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   entry: './bin/index',
-  mode: 'development',
+  mode: 'production',
   target: 'node',
   output: {
     filename: 'main.js',
