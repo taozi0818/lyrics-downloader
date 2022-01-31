@@ -1,4 +1,4 @@
-module.exports = function() {
+function start() {
   const pkg = require('../package.json');
   const version = pkg.version;
   const name = pkg.name;
@@ -7,4 +7,6 @@ module.exports = function() {
 
   const program = require('../lib/index').default;
   program.parse(process.argv);
-};
+}
+
+start();
