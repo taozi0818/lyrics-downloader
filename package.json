@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Download lyrics automatically",
   "bin": {
-    "lyrics-downloader": "bin/index",
-    "lyrics-dl": "bin/index",
-    "lyrics": "bin/index"
+    "lyrics-downloader": "dist/main.js",
+    "lyrics-dl": "dist/main.js",
+    "lyrics": "dist/main.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -31,6 +31,7 @@
   "homepage": "https://github.com/taozi0818/lyrics-downloader#readme",
   "dependencies": {
     "axios": "^0.25.0",
+    "chalk": "^5.0.0",
     "commander": "^9.0.0",
     "crypto-js": "^4.1.1",
     "inquirer": "^8.2.0",
@@ -39,13 +40,21 @@
     "source-map-support": "^0.5.21"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.12",
+    "@babel/plugin-transform-modules-commonjs": "^7.16.8",
+    "@babel/plugin-transform-runtime": "^7.16.10",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/runtime": "^7.16.7",
     "@types/node": "12.x",
     "@types/qrcode-terminal": "^0.12.0",
     "@typescript-eslint/eslint-plugin": "^5.9.1",
     "@typescript-eslint/parser": "^5.9.1",
+    "babel-loader": "^8.2.3",
     "eslint": "^7.32.0",
     "install": "^0.13.0",
     "rimraf": "^3.0.2",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
   }
 }

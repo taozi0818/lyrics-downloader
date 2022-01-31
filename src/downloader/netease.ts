@@ -1,7 +1,7 @@
 import qs from 'qs';
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
+// import chalk from 'chalk';
 import axios, { AxiosInstance } from 'axios';
 import { BaseDownloader, AbsDownloader, SongFile, BaseDownloaderConfig } from './base';
 import { t } from '../i18n';
@@ -30,7 +30,7 @@ const { encrypt }: { encrypt: EncryptBody } = require('../utils/cryptoNetease');
 const ApiRouter = {
   SearchSong: '/weapi/search/suggest/web',
   SearchLyrics: '/api/song/media'
-}
+};
 
 export default class NeteaseDownloader extends BaseDownloader implements AbsDownloader {
   private baseUrl = `https://music.163.com`;
@@ -51,11 +51,13 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
       const lyrics = await this.searchLyrics(songId);
       const { path: lyricsFilePath, name: lyricsFileName } = await this.handlerLyrics(song, lyrics);
 
-      console.log(chalk.green(`${t('zh', 'lyrics.download_success')}: ${lyricsFileName}`));
+      // console.log(chalk.green(`${t('zh', 'lyrics.download_success')}: ${lyricsFileName}`));
+      console.log(`${t('zh', 'lyrics.download_success')}: ${lyricsFileName}`);
 
       return { success: true, lyrics: lyricsFilePath };
     } catch (e) {
-      console.log(chalk.bold.red(`${t('zh', 'lyrics.download_failed')}: ${song._filename}`));
+      console.log(`${t('zh', 'lyrics.download_failed')}: ${song._filename}`);
+      // console.log(chalk.bold.red(`${t('zh', 'lyrics.download_failed')}: ${song._filename}`));
       return { success: false };
     }
   }

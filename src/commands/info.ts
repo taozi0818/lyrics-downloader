@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import chalk from 'chalk';
+// import chalk from 'chalk';
 import os from 'os';
 import { enAndZh } from '../utils/display';
 
@@ -12,7 +12,8 @@ async function action(argument: string, options, command: Command) {
     [ '\nInput `lyrics -h` to display help for command']
   ];
 
-  console.log(chalk.green.green(displayItem.map(i => i.join('\t\t')).join('\n')));
+  // console.log(chalk.green.green(displayItem.map(i => i.join('\t\t')).join('\n')));
+  console.log(displayItem.map(i => i.join('\t\t')).join('\n'));
 }
 
 /**
