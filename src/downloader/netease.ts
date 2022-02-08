@@ -27,23 +27,23 @@ export interface Lyrics {
 
 const { encrypt }: { encrypt: EncryptBody } = require('../utils/cryptoNetease');
 
-const ApiRouter = {
-  SearchSong: '/weapi/search/suggest/web',
-  SearchLyrics: '/api/song/media'
-}
-
 export default class NeteaseDownloader extends BaseDownloader implements AbsDownloader {
-  private baseUrl = `https://music.163.com`;
+  private readonly API_BASE_URL = `https://music.163.com`;
+  private readonly API_ROUTER = {
+    SearchSong: '/weapi/search/suggest/web',
+    SearchLyrics: '/api/song/media'
+  };
   private axios: AxiosInstance = axios.create({
-    baseURL: this.baseUrl,
+    baseURL: this.API_BASE_URL,
   });
 
-  constructor(opts?: BaseDownloaderConfig) {
+  constructor(opts: BaseDownloaderConfig = {}) {
     super(opts);
-    this.handlerLyrics = this.handlerLyrics || this.defaultLyricsHandler;
   }
 
-  public async downloadLyrics(song: SongFile) {
+  public async downloadLyrics(name: string) {
+    const song = this.parseFileName(name);
+
     try {
       const matchResult = await this.searchSong(song);
       const { result: songInfo } = matchResult;
@@ -68,7 +68,7 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
     });
 
     const { data } = await this.axios.request<{ result: { songs: Song[] }; code: number; }>({
-      url: ApiRouter.SearchSong,
+      url: this.API_ROUTER.SearchSong,
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -111,32 +111,11 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
 
   private async searchLyrics(id: number) {
     const { data } = await this.axios.request<Lyrics>({
-      url: ApiRouter.SearchLyrics,
+      url: this.API_ROUTER.SearchLyrics,
       method: 'GET',
       params: { id },
     });
 
     return data?.lyric;
-  }
-
-  private generateSearchWords(song: SongFile) {
-    return song.artist ? `${song.name} ${song.artist}` : song.name;
-  }
-
-  private async defaultLyricsHandler(song: SongFile, lyrics: string) {
-    if (!lyrics) {
-      return;
-    }
-
-    const mediaFile = path.parse(song._path);
-    const lyricsFileName = mediaFile.name + this.lyricsExtname;
-    const filePath = path.resolve(mediaFile.dir, lyricsFileName);
-
-    fs.writeFileSync(filePath, lyrics);
-
-    return {
-      path: filePath,
-      name: lyricsFileName,
-    };
   }
 }

@@ -1,5 +1,6 @@
 import path from 'path';
 import * as mm from 'music-metadata';
+import fs from "fs";
 
 export interface SongFile {
   _path: string;
@@ -9,13 +10,13 @@ export interface SongFile {
 }
 
 export abstract class AbsDownloader {
-  abstract downloadLyrics(song: SongFile): Promise<{ success: boolean, lyricsPath?: string; }>
+  abstract downloadLyrics(song: string): Promise<{ success: boolean, lyricsPath?: string; }>
 }
 
 type LyricsHandler = (song: SongFile, lyrics: string) => Promise<any>;
 
 export interface BaseDownloaderConfig {
-  handlerLyrics: LyricsHandler;
+  handlerLyrics?: LyricsHandler;
 }
 
 export class BaseDownloader {
@@ -25,7 +26,9 @@ export class BaseDownloader {
 
   protected handlerLyrics: LyricsHandler;
 
-  constructor(opts?: { handlerLyrics: LyricsHandler }) {}
+  constructor(opts: { handlerLyrics?: LyricsHandler } = {}) {
+    this.handlerLyrics = opts.handlerLyrics || this.defaultLyricsHandler;
+  }
 
   public parseFileName(filename: string): SongFile {
     const [ _name, _artist = '' ] = filename.split('-');
@@ -42,7 +45,28 @@ export class BaseDownloader {
     };
   }
 
+  public generateSearchWords(song: SongFile) {
+    return song.artist ? `${song.name} ${song.artist}` : song.name;
+  }
+
   public parseMediaFile(path: string) {
     return mm.parseFile(path);
+  }
+
+  protected async defaultLyricsHandler(song: SongFile, lyrics: string) {
+    if (!lyrics) {
+      return;
+    }
+
+    const mediaFile = path.parse(song._path);
+    const lyricsFileName = mediaFile.name + this.lyricsExtname;
+    const filePath = path.resolve(mediaFile.dir, lyricsFileName);
+
+    fs.writeFileSync(filePath, lyrics);
+
+    return {
+      path: filePath,
+      name: lyricsFileName,
+    };
   }
 }
