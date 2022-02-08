@@ -12,8 +12,7 @@ async function action(argument: string, options, command: Command) {
   const mediaFiles = listMediaFile();
 
   await Promise.all(mediaFiles.map(async i => {
-    const song = downloader.parseFileName(i.name);
-    return downloader.downloadLyrics(song);
+    return downloader.downloadLyrics(i.name);
   }));
 }
 
