@@ -30,11 +30,11 @@
   },
   "homepage": "https://github.com/taozi0818/lyrics-downloader#readme",
   "dependencies": {
-    "axios": "^0.25.0",
     "commander": "^9.0.0",
     "crypto-js": "^4.1.1",
     "inquirer": "^8.2.0",
     "music-metadata": "^7.11.7",
+    "music-platform-api": "^1.0.1",
     "qs": "^6.10.3",
     "source-map-support": "^0.5.21"
   },

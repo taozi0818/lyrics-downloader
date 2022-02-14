@@ -10,7 +10,7 @@ export default class Downloader {
   private readonly priorityWorker: AbsDownloader[];
 
   constructor(opts: DownloadConfig = {}) {
-    this.priorityWorker = opts?.priorityWorker || [ new QQDownloader(opts) ];
+    this.priorityWorker = opts?.priorityWorker || [ new NeteaseDownloader(opts) ];
     // this.priorityWorker = opts?.priorityWorker || [ new NeteaseDownloader(opts), new QQDownloader(opts) ];
   }
 

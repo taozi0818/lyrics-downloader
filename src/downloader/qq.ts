@@ -1,7 +1,7 @@
 import { BaseDownloader, AbsDownloader, SongFile, BaseDownloaderConfig } from './base';
-import axios, { AxiosInstance } from 'axios';
 import chalk from 'chalk';
 import { t } from '../i18n';
+import { QQ as QQApi } from 'music-platform-api';
 
 export interface Song {
   docid: string;
@@ -17,15 +17,7 @@ interface SongList {
 }
 
 export default class QQDownloader extends BaseDownloader implements AbsDownloader {
-  private readonly API_BASE_URL = 'https://c.y.qq.com';
-  private readonly API_ROUTER = {
-    SearchSong: '/splcloud/fcgi-bin/smartbox_new.fcg',
-    SearchLyrics: '/lyric/fcgi-bin/fcg_query_lyric_new.fcg',
-  };
-  private axios: AxiosInstance = axios.create({
-    baseURL: this.API_BASE_URL,
-  });
-
+  private platformApi = new QQApi()
   constructor(opts: BaseDownloaderConfig = {}) {
     super(opts);
   }
@@ -51,32 +43,13 @@ export default class QQDownloader extends BaseDownloader implements AbsDownloade
 
   private async searchSong(song: SongFile) {
     const keywords = this.generateSearchWords(song);
+    const res = await this.platformApi.search(keywords);
 
-    const { data } = await this.axios.request<{ code: number; data: { song: SongList; }; }>({
-      url: this.API_ROUTER.SearchSong,
-      method: 'GET',
-      headers: {
-        referer: 'https://y.qq.com/',
-      },
-      params: {
-        format: 'json',
-        inCharset: 'utf-8',
-        outCharset: 'utf-8',
-        notice: 0,
-        platform: 'yqq.json',
-        needNewCode: 1,
-        uin: 0,
-        hostUin: 0,
-        is_xml: 0,
-        key: keywords,
-      },
-    });
-
-    if (data?.code !== 0) {
+    if (res?.code !== 0) {
       return { success: false };
     }
 
-    const { song: songResult } = data.data;
+    const { song: songResult } = res.data;
     let r: Song, artistMatched;
 
     for (let i of songResult.itemlist) {
@@ -96,36 +69,6 @@ export default class QQDownloader extends BaseDownloader implements AbsDownloade
   }
 
   private async searchLyrics(id: string) {
-    const { data } = await this.axios.request<{
-      retcode: number;
-      code: number;
-      subcode: number;
-      lyric: string;
-    }>({
-      url: this.API_ROUTER.SearchLyrics,
-      method: 'GET',
-      headers: {
-        referer: 'https://y.qq.com/',
-      },
-      params: {
-        format: 'json',
-        inCharset: 'utf-8',
-        outCharset: 'utf-8',
-        notice: 0,
-        platform: 'yqq.json',
-        needNewCode: 0,
-        uin: 0,
-        loginUin: 0,
-        songmid: id,
-      },
-    });
-
-    const { lyric } = data;
-
-    if (!lyric) {
-      return '';
-    }
-
-    return Buffer.from(lyric, 'base64').toString();
+    return this.platformApi.getLyrics(id);
   }
 }
