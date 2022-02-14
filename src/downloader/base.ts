@@ -55,7 +55,7 @@ export class BaseDownloader {
 
   protected async defaultLyricsHandler(song: SongFile, lyrics: string) {
     if (!lyrics) {
-      return;
+      return {};
     }
 
     const mediaFile = path.parse(song._path);

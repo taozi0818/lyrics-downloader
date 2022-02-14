@@ -1,8 +1,5 @@
-import qs from 'qs';
-import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
-import axios, { AxiosInstance } from 'axios';
+import { Netease as NeteaseApi } from 'music-platform-api';
 import { BaseDownloader, AbsDownloader, SongFile, BaseDownloaderConfig } from './base';
 import { t } from '../i18n';
 
@@ -18,24 +15,8 @@ export interface Song {
   }>;
 }
 
-export interface Lyrics {
-  songStatus: number;
-  lyricVersion: number;
-  lyric: string;
-  code?: number;
-}
-
-const { encrypt }: { encrypt: EncryptBody } = require('../utils/cryptoNetease');
-
 export default class NeteaseDownloader extends BaseDownloader implements AbsDownloader {
-  private readonly API_BASE_URL = `https://music.163.com`;
-  private readonly API_ROUTER = {
-    SearchSong: '/weapi/search/suggest/web',
-    SearchLyrics: '/api/song/media'
-  };
-  private axios: AxiosInstance = axios.create({
-    baseURL: this.API_BASE_URL,
-  });
+  private platformApi = new NeteaseApi();
 
   constructor(opts: BaseDownloaderConfig = {}) {
     super(opts);
@@ -61,33 +42,9 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
   }
 
   private async searchSong(song: SongFile) {
-    const encBody = encrypt({
-      s: this.generateSearchWords(song),
-      limit: "8",
-      csrf_token: ""
-    });
-
-    const { data } = await this.axios.request<{ result: { songs: Song[] }; code: number; }>({
-      url: this.API_ROUTER.SearchSong,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      params: {
-        csrf_token: ''
-      },
-      data: qs.stringify({
-        params: encBody.encText,
-        encSecKey: encBody.encSecKey,
-      }),
-    });
-
-    if (!data.code || data.code !== 200) {
-      // TODO: display API information
-      return { success: false, };
-    }
-
-    const { songs } = data?.result;
+    const keywords = this.generateSearchWords(song);
+    const res = await this.platformApi.search(keywords);
+    const { songs } = res;
     const mediaMeta = await this.parseMediaFile(song._path);
     const mediaDuration = mediaMeta.format.duration * 1000;
 
@@ -110,12 +67,6 @@ export default class NeteaseDownloader extends BaseDownloader implements AbsDown
   }
 
   private async searchLyrics(id: number) {
-    const { data } = await this.axios.request<Lyrics>({
-      url: this.API_ROUTER.SearchLyrics,
-      method: 'GET',
-      params: { id },
-    });
-
-    return data?.lyric;
+    return this.platformApi.getLyrics(id);
   }
 }
